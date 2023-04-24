@@ -1485,8 +1485,12 @@ void proxyToQuanX(std::vector<Proxy> &nodes, INIReader &ini, std::vector<Ruleset
             string_array vArray = split(iter->second, ",");
             if(vArray.size() > 1)
             {
-                if(trim(vArray[vArray.size() - 1]).find("img-url") == 0)
-                    filtered_nodelist.emplace_back(trim(vArray[vArray.size() - 1]));
+                for (int i = 1; i < vArray.size(); i++)
+                {
+                    filtered_nodelist.emplace_back(trim(vArray[i]));
+                }
+                // if(trim(vArray[vArray.size() - 1]).find("img-url") == 0)
+                //     filtered_nodelist.emplace_back(trim(vArray[vArray.size() - 1]));
             }
         }
 
