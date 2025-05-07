@@ -3,7 +3,7 @@ set -xe
 
 apt update
 apt install -y git cmake clang pkg-config
-apt install -y libevent libcurl openssl pcre2
+apt install -y libcurl openssl pcre2
 
 git clone https://github.com/jbeder/yaml-cpp --depth=1
 cd yaml-cpp
@@ -20,7 +20,8 @@ git clone https://github.com/ftk/quickjspp --depth=1
 cd quickjspp
 cmake -DCMAKE_BUILD_TYPE=Release .
 make quickjs -j3
-install -m644 quickjs/libquickjs.a $PREFIX/lib/
+install -d $PREFIX/lib/quickjs/
+install -m644 quickjs/libquickjs.a $PREFIX/lib/quickjs/
 install -d $PREFIX/include/quickjs/
 install -m644 quickjs/quickjs.h quickjs/quickjs-libc.h $PREFIX/include/quickjs/
 install -m644 quickjspp.hpp $PREFIX/include/
