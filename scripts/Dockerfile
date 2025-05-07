@@ -6,10 +6,10 @@ ARG SHA=""
 # build minimized
 WORKDIR /
 RUN set -xe && \
-    echo -e 'https://mirrors.aliyun.com/alpine/v3.6/main/\nhttps://mirrors.aliyun.com/alpine/v3.6/community/' > /etc/apk/repositories && \
+    echo -e 'https://mirrors.aliyun.com/alpine/v3.16/main/\nhttps://mirrors.aliyun.com/alpine/v3.16/community/' > /etc/apk/repositories && \
     apk add --no-cache --virtual .build-tools git g++ build-base linux-headers cmake python3 && \
-    apk add --no-cache --virtual .build-deps curl-dev rapidjson-dev pcre2-dev yaml-cpp-dev && \
-    git clone https://github.com/ftk/quickjspp --depth=1 && \
+    apk add --no-cache --virtual .build-deps curl-dev rapidjson-dev pcre2-dev yaml-cpp-dev
+RUN git clone https://github.com/ftk/quickjspp --depth=1 && \
     cd quickjspp && \
     git submodule update --init && \
     cmake -DCMAKE_BUILD_TYPE=Release . && \
@@ -19,8 +19,8 @@ RUN set -xe && \
     install -d /usr/include/quickjs/ && \
     install -m644 quickjs/quickjs.h quickjs/quickjs-libc.h /usr/include/quickjs/ && \
     install -m644 quickjspp.hpp /usr/include && \
-    cd .. && \
-    git clone https://github.com/PerMalmberg/libcron --depth=1 && \
+    cd ..
+RUN git clone https://github.com/PerMalmberg/libcron --depth=1 && \
     cd libcron && \
     git submodule update --init && \
     cmake -DCMAKE_BUILD_TYPE=Release . && \
@@ -30,13 +30,13 @@ RUN set -xe && \
     install -m644 libcron/include/libcron/* /usr/include/libcron/ && \
     install -d /usr/include/date/ && \
     install -m644 libcron/externals/date/include/date/* /usr/include/date/ && \
-    cd .. && \
-    git clone https://github.com/ToruNiina/toml11 --branch="v4.3.0" --depth=1 && \
+    cd ..
+RUN git clone https://github.com/ToruNiina/toml11 --branch="v4.3.0" --depth=1 && \
     cd toml11 && \
     cmake -DCMAKE_CXX_STANDARD=11 . && \
     make install -j $THREADS && \
-    cd .. && \
-    git clone https://github.com/sillydong/subconverter --depth=1 && \
+    cd ..
+RUN git clone https://github.com/sillydong/subconverter --depth=1 && \
     cd subconverter && \
     [ -n "$SHA" ] && sed -i 's/\(v[0-9]\.[0-9]\.[0-9]\)/\1-'"$SHA"'/' src/version.h;\
     python3 -m ensurepip && \
@@ -49,7 +49,7 @@ RUN set -xe && \
 FROM alpine:3.16
 LABEL maintainer="njutczd@gmail.com"
 
-RUN echo -e 'https://mirrors.aliyun.com/alpine/v3.6/main/\nhttps://mirrors.aliyun.com/alpine/v3.6/community/' > /etc/apk/repositories && \
+RUN echo -e 'https://mirrors.aliyun.com/alpine/v3.16/main/\nhttps://mirrors.aliyun.com/alpine/v3.16/community/' > /etc/apk/repositories && \
     apk add --no-cache --virtual subconverter-deps pcre2 libcurl yaml-cpp
 
 COPY --from=builder /subconverter/subconverter /usr/bin/
