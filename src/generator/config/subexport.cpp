@@ -1576,7 +1576,7 @@ void proxyToQuanX(std::vector<Proxy> &nodes, INIReader &ini, std::vector<Ruleset
             else if (tlssecure)
                 proxyStr += ", obfs=over-tls, obfs-host=" + host;
 
-            writeLog(0, "To QuanX: " + proxy, LOG_LEVEL_INFO);
+            writeLog(0, "To QuanX: " + proxyStr, LOG_LEVEL_INFO);
             break;
         case ProxyType::SOCKS5:
             proxyStr = "socks5 = " + hostname + ":" + port;
