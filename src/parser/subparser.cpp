@@ -897,7 +897,7 @@ void explodeTrojan(std::string trojan, Proxy &node)
     if (group.empty())
         group = TROJAN_DEFAULT_GROUP;
 
-    writeLog(0, "From Trojan: " + node + ":" + group + ":" + remark + ":" + server + ":" + port + ":" + psk + ":" + network + ":" + host + ":" + path + ":" + tfo + ":" + scv, LOG_LEVEL_INFO);
+    writeLog(0, "From Trojan: " + group + ":" + remark + ":" + server + ":" + port + ":" + psk + ":" + network + ":" + host + ":" + path + ":" + tfo + ":" + scv, LOG_LEVEL_INFO);
 
     trojanConstruct(node, group, remark, server, port, psk, network, host, path, true, tribool(), tfo, scv);
 }
