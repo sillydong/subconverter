@@ -1,5 +1,5 @@
 FROM alpine:3.16 AS builder
-LABEL maintainer="tindy.it@gmail.com"
+LABEL maintainer="njutczd@gmail.com"
 ARG THREADS="4"
 ARG SHA=""
 
@@ -46,7 +46,7 @@ RUN set -xe && \
 
 # build final image
 FROM alpine:3.16
-LABEL maintainer="tindy.it@gmail.com"
+LABEL maintainer="njutczd@gmail.com"
 
 RUN apk add --no-cache --virtual subconverter-deps pcre2 libcurl yaml-cpp
 
