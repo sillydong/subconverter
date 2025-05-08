@@ -1911,12 +1911,31 @@ bool explodeSurge(std::string surge, std::vector<Proxy> &nodes)
                 case "skip-cert-verify"_hash:
                     scv = itemVal;
                     break;
+                case "ws"_hash:
+                    net = itemVal == "true" ? "ws" : "tcp";
+                    break;
+                case "ws-path"_hash:
+                    path = itemVal;
+                    break;
+                case "ws-headers"_hash:
+                    headers = split(itemVal, "|");
+                    for (auto &y : headers)
+                    {
+                        header = split(trim(y), ":");
+                        if (header.size() != 2)
+                            continue;
+                        else if (regMatch(header[0], "(?i)host"))
+                            host = trimQuote(header[1]);
+                        else if (regMatch(header[0], "(?i)edge"))
+                            edge = trimQuote(header[1]);
+                    }
+                    break;
                 default:
                     continue;
                 }
             }
 
-            trojanConstruct(node, TROJAN_DEFAULT_GROUP, remarks, server, port, password, "", host, "", true, udp, tfo, scv);
+            trojanConstruct(node, TROJAN_DEFAULT_GROUP, remarks, server, port, password, net, host, path, true, udp, tfo, scv);
             break;
         case "snell"_hash:
             server = trim(configs[1]);
@@ -2231,6 +2250,24 @@ bool explodeSurge(std::string surge, std::vector<Proxy> &nodes)
                     case "tls13"_hash:
                         tls13 = itemVal;
                         break;
+                    case "obfs"_hash:
+                        switch (hash_(itemVal))
+                        {
+                        case "ws"_hash:
+                            net = "ws";
+                            break;
+                        case "wss"_hash:
+                            net = "ws";
+                            tls = "true";
+                            break;
+                        }
+                        break;
+                    case "obfs-uri"_hash:
+                        path = itemVal;
+                        break;
+                    case "obfs-host"_hash:
+                        host = itemVal;
+                        break;
                     default:
                         continue;
                     }
@@ -2238,7 +2275,7 @@ bool explodeSurge(std::string surge, std::vector<Proxy> &nodes)
                 if (remarks.empty())
                     remarks = server + ":" + port;
 
-                trojanConstruct(node, TROJAN_DEFAULT_GROUP, remarks, server, port, password, "", host, "", tls == "true", udp, tfo, scv, tls13);
+                trojanConstruct(node, TROJAN_DEFAULT_GROUP, remarks, server, port, password, net, host, path, tls == "true", udp, tfo, scv, tls13);
                 break;
             case "http"_hash: // quantumult x style http links
                 server = trim(configs[0].substr(0, configs[0].rfind(':')));
