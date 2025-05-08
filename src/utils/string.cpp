@@ -33,7 +33,6 @@ std::vector<std::string> splitN(const std::string &s, const std::string &separat
 
     while (bpos < s.size() && (count <= 0 || splits < count))
     {
-        printf("%d\n", bpos);
         if (epos == std::string::npos)
             epos = s.size();
         result.push_back(s.substr(bpos, epos - bpos));
@@ -44,7 +43,6 @@ std::vector<std::string> splitN(const std::string &s, const std::string &separat
 
     if (bpos < s.size())
     {
-        printf("ending %d\n", bpos);
         result.push_back(s.substr(bpos));
     }
 
