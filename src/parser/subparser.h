@@ -17,6 +17,7 @@ enum class ConfType
     SOCKS,
     HTTP,
     SUB,
+    Surge,
     Local
 };
 
@@ -29,36 +30,35 @@ void trojanConstruct(Proxy &node, const std::string &group, const std::string &r
 void snellConstruct(Proxy &node, const std::string &group, const std::string &remarks, const std::string &server, const std::string &port, const std::string &password, const std::string &obfs, const std::string &host, uint16_t version = 0, tribool udp = tribool(), tribool tfo = tribool(), tribool scv = tribool(), const std::string &underlying_proxy = "");
 
 void hysteriaConstruct(
-    Proxy &node, 
-    const std::string &group, 
-    const std::string &remarks, 
+    Proxy &node,
+    const std::string &group,
+    const std::string &remarks,
     const std::string &server,
-    const std::string &port, 
+    const std::string &port,
     const std::string &ports,
-    const std::string &protocol, 
-    const std::string &obfs_protocol, 
-    const std::string &up, 
-    const std::string &up_speed, 
-    const std::string &down, 
-    const std::string &down_speed, 
-    const std::string &auth, 
-    const std::string &auth_str, 
-    const std::string &obfs, 
-    const std::string &sni, 
-    const std::string &fingerprint, 
-    const std::string &ca, 
-    const std::string &ca_str, 
-    const std::string &recv_window_conn, 
-    const std::string &recv_window, 
-    const std::string &disable_mtu_discovery, 
-    const std::string &hop_interval, 
-    const string_array &alpn, 
-    tribool tfo, 
+    const std::string &protocol,
+    const std::string &obfs_protocol,
+    const std::string &up,
+    const std::string &up_speed,
+    const std::string &down,
+    const std::string &down_speed,
+    const std::string &auth,
+    const std::string &auth_str,
+    const std::string &obfs,
+    const std::string &sni,
+    const std::string &fingerprint,
+    const std::string &ca,
+    const std::string &ca_str,
+    const std::string &recv_window_conn,
+    const std::string &recv_window,
+    const std::string &disable_mtu_discovery,
+    const std::string &hop_interval,
+    const string_array &alpn,
+    tribool tfo,
     tribool scv,
-    const std::string &underlying_proxy = ""
-);
+    const std::string &underlying_proxy = "");
 
-void hysteria2Construct(Proxy &node, const std::string &group, const std::string &remarks, const std::string &server, const std::string &port,const std::string &up, const std::string &down, const std::string &password, const std::string &obfs, const std::string &obfs_password, const std::string &sni, const std::string &fingerprint, const string_array &alpn, const std::string &ca, const std::string &caStr, const std::string &cwnd, tribool tfo, tribool scv, const std::string &underlying_proxy = "");
+void hysteria2Construct(Proxy &node, const std::string &group, const std::string &remarks, const std::string &server, const std::string &port, const std::string &up, const std::string &down, const std::string &password, const std::string &obfs, const std::string &obfs_password, const std::string &sni, const std::string &fingerprint, const string_array &alpn, const std::string &ca, const std::string &caStr, const std::string &cwnd, tribool tfo, tribool scv, const std::string &underlying_proxy = "");
 
 void explodeVmess(std::string vmess, Proxy &node);
 void explodeSSR(std::string ssr, Proxy &node);

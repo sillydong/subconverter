@@ -2402,6 +2402,8 @@ int explodeConfContent(const std::string &content, std::vector<Proxy> &nodes)
         filetype = ConfType::SSR; // use ssr config parser
     else if (strFind(content, "\"ModeFileNameType\""))
         filetype = ConfType::Netch;
+    else if (strFind(content, "Surge"))
+        filetype = ConfType::Surge;
 
     switch (filetype)
     {
@@ -2422,6 +2424,9 @@ int explodeConfContent(const std::string &content, std::vector<Proxy> &nodes)
         break;
     case ConfType::Netch:
         explodeNetchConf(content, nodes);
+        break;
+    case ConfType::Surge:
+        explodeSurge(content, nodes);
         break;
     default:
         // try to parse as a local subscription

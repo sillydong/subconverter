@@ -771,6 +771,8 @@ std::string proxyToSurge(std::vector<Proxy> &nodes, const std::string &base_conf
 
         processRemark(x.Remark, remarks_list);
 
+        writeLog(0, "A: " + x.TransferProtocol, LOG_LEVEL_INFO);
+
         std::string &hostname = x.Hostname, &username = x.Username, &password = x.Password, &method = x.EncryptMethod, &id = x.UserId, &transproto = x.TransferProtocol, &host = x.Host, &edge = x.Edge, &path = x.Path, &protocol = x.Protocol, &protoparam = x.ProtocolParam, &obfs = x.OBFS, &obfsparam = x.OBFSParam, &plugin = x.Plugin, &pluginopts = x.PluginOption, &underlying_proxy = x.UnderlyingProxy;
         std::string port = std::to_string(x.Port);
         bool &tlssecure = x.TLSSecure;
@@ -785,6 +787,8 @@ std::string proxyToSurge(std::vector<Proxy> &nodes, const std::string &base_conf
         string_array args, headers;
 
         std::stringstream ss;
+
+        writeLog(0, "B: " + transproto + ":" + host + ":" + path + ":" + hostname, LOG_LEVEL_INFO);
 
         switch (x.Type)
         {
@@ -900,7 +904,6 @@ std::string proxyToSurge(std::vector<Proxy> &nodes, const std::string &base_conf
                 proxy += ", sni=" + host;
             if (!scv.is_undef())
                 proxy += ", skip-cert-verify=" + scv.get_str();
-            writeLog(0, "In Surge: " + transproto + ":" + host + ":" + path + ":" + hostname, LOG_LEVEL_INFO);
             if (transproto == "ws")
             {
                 if (host.empty())
