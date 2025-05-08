@@ -900,11 +900,8 @@ std::string proxyToSurge(std::vector<Proxy> &nodes, const std::string &base_conf
                 proxy += ", sni=" + host;
             if (!scv.is_undef())
                 proxy += ", skip-cert-verify=" + scv.get_str();
-            switch (hash_(transproto))
+            if (transproto == "ws")
             {
-            case "tcp"_hash:
-                break;
-            case "ws"_hash:
                 if (host.empty())
                     proxy += ", ws=true, ws-path=" + path + ", sni=" + hostname;
                 else
@@ -915,9 +912,6 @@ std::string proxyToSurge(std::vector<Proxy> &nodes, const std::string &base_conf
                     headers.push_back("Edge:" + edge);
                 if (!headers.empty())
                     proxy += ", ws-headers=" + join(headers, "|");
-                break;
-            default:
-                continue;
             }
             writeLog(0, "To Surge: " + proxy, LOG_LEVEL_INFO);
             break;
