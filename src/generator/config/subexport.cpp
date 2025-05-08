@@ -900,6 +900,7 @@ std::string proxyToSurge(std::vector<Proxy> &nodes, const std::string &base_conf
                 proxy += ", sni=" + host;
             if (!scv.is_undef())
                 proxy += ", skip-cert-verify=" + scv.get_str();
+            writeLog(0, "In Surge: " + transproto + ":" + host + ":" + path + ":" + hostname, LOG_LEVEL_INFO);
             if (transproto == "ws")
             {
                 if (host.empty())
