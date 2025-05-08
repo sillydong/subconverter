@@ -1555,16 +1555,6 @@ void proxyToQuanX(std::vector<Proxy> &nodes, INIReader &ini, std::vector<Ruleset
             break;
         case ProxyType::Trojan:
             proxyStr = "trojan = " + hostname + ":" + port + ", password=" + password;
-            if (tlssecure)
-            {
-                proxyStr += ", over-tls=true, tls-host=" + host;
-                if (!tls13.is_undef())
-                    proxyStr += ", tls13=" + std::string(tls13 ? "true" : "false");
-            }
-            else
-            {
-                proxyStr += ", over-tls=false";
-            }
             if (transproto == "ws")
             {
                 if (tlssecure)
@@ -1574,7 +1564,13 @@ void proxyToQuanX(std::vector<Proxy> &nodes, INIReader &ini, std::vector<Ruleset
                 proxyStr += ", obfs-host=" + host + ", obfs-uri=" + path;
             }
             else if (tlssecure)
-                proxyStr += ", obfs=over-tls, obfs-host=" + host;
+            {
+                proxyStr += ", over-tls=true, tls-host=" + host;
+                if (!tls13.is_undef())
+                    proxyStr += ", tls13=" + std::string(tls13 ? "true" : "false");
+            }
+            else
+                proxyStr += ", over-tls=false";
 
             writeLog(0, "To QuanX: " + proxyStr, LOG_LEVEL_INFO);
             break;
@@ -1672,12 +1668,8 @@ void proxyToQuanX(std::vector<Proxy> &nodes, INIReader &ini, std::vector<Ruleset
             string_array vArray = split(iter->second, ",");
             if (vArray.size() > 1)
             {
-                for (int i = 1; i < vArray.size(); i++)
-                {
-                    filtered_nodelist.emplace_back(trim(vArray[i]));
-                }
-                // if(trim(vArray[vArray.size() - 1]).find("img-url") == 0)
-                //     filtered_nodelist.emplace_back(trim(vArray[vArray.size() - 1]));
+                if (trim(vArray[vArray.size() - 1]).find("img-url") == 0)
+                    filtered_nodelist.emplace_back(trim(vArray[vArray.size() - 1]));
             }
         }
 
