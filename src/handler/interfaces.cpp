@@ -137,12 +137,12 @@ std::string getRuleset(RESPONSE_CALLBACK_ARGS)
 {
     auto &argument = request.argument;
     int *status_code = &response.status_code;
-    /// type: 1 for Surge, 2 for Quantumult X, 3 for Clash domain rule-provider, 4 for Clash ipcidr rule-provider, 5 for Surge DOMAIN-SET, 6 for Clash classical ruleset
+    /// type: 1 for Surge, 2 for Quantumult X, 3 for Clash domain rule-provider, 4 for Clash ipcidr rule-provider, 5 for Surge DOMAIN-SET, 6 for Clash classical ruleset, 7 for ShadowRocket
     std::string url = urlSafeBase64Decode(getUrlArg(argument, "url")), type = getUrlArg(argument, "type"), group = urlSafeBase64Decode(getUrlArg(argument, "group"));
     std::string output_content, dummy;
     int type_int = to_int(type, 0);
 
-    if(url.empty() || type.empty() || (type_int == 2 && group.empty()) || (type_int < 1 || type_int > 6))
+    if(url.empty() || type.empty() || ((type_int == 2 || type_int == 7) && group.empty()) || (type_int < 1 || type_int > 7))
     {
         *status_code = 400;
         return "Invalid request!";
@@ -198,6 +198,8 @@ std::string getRuleset(RESPONSE_CALLBACK_ARGS)
 
     if(type_int == 3 || type_int == 4 || type_int == 6)
         output_content = "payload:\n";
+    if(type_int == 7)
+        output_content = "#!name="+group+"\n#!desc=Rules\n[Rule]"
 
     while(getline(ss, strLine, delimiter))
     {
@@ -214,6 +216,10 @@ std::string getRuleset(RESPONSE_CALLBACK_ARGS)
             break;
         case 1:
             if(!std::any_of(SurgeRuleTypes.begin(), SurgeRuleTypes.end(), [&strLine](const std::string& type){return startsWith(strLine, type);}))
+                continue;
+            break;
+        case 7:
+            if(!std::any_of(ShadowRocketRuleTypes.begin(), ShadowRocketRuleTypes.end(), [&strLine](const std::string& type){return startsWith(strLine, type);}))
                 continue;
             break;
         case 3:
